@@ -1,0 +1,4 @@
+[install]
+linker = "isolated"
+# You can also run `bun install --linker isolated` per-install or set
+# BUN_INSTALL_CACHE_DIR to point Bun's global cache location.
