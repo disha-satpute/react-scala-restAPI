@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firstapp/firstapp.iml" filepath="$PROJECT_DIR$/.idea/modules/firstapp/firstapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firstapp/firstapp.firstapp-build.iml" filepath="$PROJECT_DIR$/.idea/modules/firstapp/firstapp.firstapp-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firstapp/firstapp.main.iml" filepath="$PROJECT_DIR$/.idea/modules/firstapp/firstapp.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/firstapp/firstapp.test.iml" filepath="$PROJECT_DIR$/.idea/modules/firstapp/firstapp.test.iml" />
+    </modules>
+  </component>
+</project>

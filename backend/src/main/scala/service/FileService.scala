@@ -56,18 +56,33 @@ object FileService {
   def updateUser(id: Int, updated: User): Task[Boolean] =
     for {
       users <- readUsers
-      updatedList = users.map(u => if (u.id == id) updated else u)
+
       exists = users.exists(_.id == id)
+
+      updatedList =
+        users.map { user =>
+          if (user.id == id)
+            updated.copy(id = id)   //  preserve original ID
+          else
+            user
+        }
+
       _ <- if (exists) writeUsers(updatedList)
       else ZIO.unit
+
     } yield exists
 
   def deleteUser(id: Int): Task[Boolean] =
     for {
       users <- readUsers
+
       filtered = users.filterNot(_.id == id)
-      exists = users.size != filtered.size
+
+      exists = users.exists(_.id == id)
+
       _ <- if (exists) writeUsers(filtered)
       else ZIO.unit
+
     } yield exists
+
 }

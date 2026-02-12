@@ -1,0 +1,45 @@
+[0m[[0m[0mdebug[0m] [0m[0mPackaging C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\firstapp_2.13-0.1.0-SNAPSHOT.jar ...[0m
+[0m[[0m[0mdebug[0m] [0m[0mInput file mappings:[0m
+[0m[[0m[0mdebug[0m] [0m[0m	data[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\data[0m
+[0m[[0m[0mdebug[0m] [0m[0m	data\users.json[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\data\users.json[0m
+[0m[[0m[0mdebug[0m] [0m[0m	MainApp$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\MainApp$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	MainApp.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\MainApp.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model\User$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model\User$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model\User$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model\User$$anon$2.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model\User$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model\User$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model\User.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model\User.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model\UserResponse$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model\UserResponse$$anon$1.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model\UserResponse$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model\UserResponse$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	model\UserResponse.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\model\UserResponse.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	routes[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\routes[0m
+[0m[[0m[0mdebug[0m] [0m[0m	routes\UserRoutes$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\routes\UserRoutes$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	routes\UserRoutes.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\routes\UserRoutes.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	service[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\service[0m
+[0m[[0m[0mdebug[0m] [0m[0m	service\FileService$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\service\FileService$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	service\FileService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\service\FileService.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\utils[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\PasswordUtils$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\utils\PasswordUtils$.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	utils\PasswordUtils.class[0m
+[0m[[0m[0mdebug[0m] [0m[0m	  C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\react-scala-restAPI\firstapp\target\scala-2.13\classes\utils\PasswordUtils.class[0m
+[0m[[0m[0mdebug[0m] [0m[0mDone packaging.[0m

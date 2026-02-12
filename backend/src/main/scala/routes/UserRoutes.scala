@@ -113,5 +113,71 @@ object UserRoutes {
             )
           )
         }
+      ,
+      // UPDATE USER
+      Method.PUT / "users" / int("id") ->
+        handler { (id: Int, req: Request) =>
+          (for {
+            body <- req.body.asString
+
+            user <- ZIO
+              .fromEither(body.fromJson[User])
+              .mapError(_ => new RuntimeException("Invalid JSON"))
+
+            hashedUser = user.copy(
+              password = PasswordUtils.hashPassword(user.password),
+              id = id
+            )
+
+            updated <- FileService.updateUser(id, hashedUser)
+
+          } yield
+            if (updated)
+              Response(
+                status = Status.Ok,
+                body = Body.fromString("User updated successfully")
+              )
+            else
+              Response(
+                status = Status.NotFound,
+                body = Body.fromString("User not found")
+              )
+
+            ).catchAll(_ =>
+            ZIO.succeed(
+              Response(
+                status = Status.BadRequest,
+                body = Body.fromString("Invalid request")
+              )
+            )
+          )
+        },
+      // DELETE USER
+      Method.DELETE / "users" / int("id") ->
+        handler { (id: Int, _: Request) =>
+          FileService.deleteUser(id)
+            .map {
+              case true =>
+                Response(
+                  status = Status.Ok,
+                  body = Body.fromString("User deleted successfully")
+                )
+
+              case false =>
+                Response(
+                  status = Status.NotFound,
+                  body = Body.fromString("User not found")
+                )
+            }
+            .catchAll(_ =>
+              ZIO.succeed(
+                Response(
+                  status = Status.InternalServerError,
+                  body = Body.fromString("Internal Server Error")
+                )
+              )
+            )
+        }
+
     )
 }
