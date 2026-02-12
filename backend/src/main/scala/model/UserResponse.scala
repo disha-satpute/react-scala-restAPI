@@ -4,6 +4,7 @@ import zio.json._
 
 case class UserResponse(
                          id: Int,
+                         url: String,
                          username: String
                        )
 

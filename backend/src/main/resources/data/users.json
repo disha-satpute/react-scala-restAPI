@@ -1,32 +1,14 @@
 [
   {
     "id" : 1,
-    "username" : "abc",
-    "password" : "$2a$10$CKjJPbHMeMnTNRauypACnuBVgiS7ua3EsDWzU6GnfrW7ILOp3L1A."
-  },
-  {
-    "id" : 3,
-    "username" : "Divya",
-    "password" : "$2a$10$WbV4ZGABx8BmFX.iasiHqOPrfWaQS7LicKh4K0OERCBJCc1DwB/eS"
-  },
-  {
-    "id" : 4,
-    "username" : "aditya",
-    "password" : "$2a$10$S0mHGwLpIhtxBdY.fbPC6eKo4XVHVtNDRXCPT4/WONg6t4QE.MxIe"
-  },
-  {
-    "id" : 5,
-    "username" : "shlok",
-    "password" : "$2a$10$YNN8rd6kYdoA6kHZ/OvpNeZHPSK93IuORGfQZJEDoIrFhL0WVQKDG"
-  },
-  {
-    "id" : 6,
-    "username" : "sakshi",
-    "password" : "$2a$10$SJNHx5Z.bA6eO3pmEaXQNexeP.F9pRb/yONNMDGBhyCVuu0ClS4L2"
-  },
-  {
-    "id" : 7,
+    "url" : "https://scala.com",
     "username" : "demo",
-    "password" : "$2a$10$6KOKra8rjELIT/aSNOGbdO0BUzmLd.22jElrwr1Ioc.NqOKg/kjKq"
+    "password" : "$2a$10$zg0pMOiVgTm70qzq.I6BLeednFQ0rRRyfH1AnTthniHK2KjNpkiwS"
+  },
+  {
+    "id" : 2,
+    "url" : "https://scala.com",
+    "username" : "demo123",
+    "password" : "$2a$10$h8kv6qfShoIzLUDOZxCZne5PqTw4NV50caG.fHoj6.X2LvHUhbHPW"
   }
 ]

@@ -21,7 +21,7 @@ object UserRoutes {
           FileService.readUsers
             .map { users =>
               val safeUsers =
-                users.map(u => UserResponse(u.id, u.username)).toJson
+                users.map(u => UserResponse(u.id, u.username,u.url)).toJson
 
               Response(
                 status = Status.Ok,
@@ -48,7 +48,7 @@ object UserRoutes {
                 Response(
                   status = Status.Ok,
                   body = Body.fromString(
-                    UserResponse(user.id, user.username).toJson
+                    UserResponse(user.id, user.username,user.url).toJson
                   ),
                   headers = Headers(Header.ContentType(MediaType.application.json))
                 )
@@ -92,7 +92,7 @@ object UserRoutes {
                 Response(
                   status = Status.Created,
                   body = Body.fromString(
-                    UserResponse(savedUser.id, savedUser.username).toJson
+                    UserResponse(savedUser.id, savedUser.username,savedUser.url).toJson
                   ),
                   headers = Headers(Header.ContentType(MediaType.application.json))
                 )

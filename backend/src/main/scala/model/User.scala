@@ -3,7 +3,8 @@ package model
 import zio.json._
 
 case class User(
-                 id: Int = 0,     // default value
+                 id: Int = 0,// default value
+                 url : String,
                  username: String,
                  password: String
                )
