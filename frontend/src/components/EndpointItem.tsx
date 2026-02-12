@@ -1,8 +1,8 @@
-import type { EndpointCredential } from "../types/EndpointCredential";
+import type { Endpoint } from "../types/EndpointCredential";
 import { EditIcon, TrashIcon } from "lucide-react";
 import EndpointButton from "./EndpointButton";
 
-export default function EndpointItem({ id, url }: EndpointCredential) {
+export default function EndpointItem({ id, url }: Endpoint) {
 
 	const trimmedUrl = (url.length > 20) ? url.substring(0, 17) + "..." : url;
     return (
