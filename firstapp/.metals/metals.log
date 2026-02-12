@@ -1,0 +1,11 @@
+2026.02.12 13:18:40 INFO  Started: Metals version 1.6.5 in folders 'C:\Users\Disha Satpute\IdeaProjects\zio\restful-web-services\firstapp' for client Visual Studio Code 1.109.0.
+2026.02.12 13:18:40 INFO  Memory monitor started
+2026.02.12 13:18:43 WARN  Using H2 2.4.240 which is newer than the version Flyway has been verified with. The latest verified version of H2 is 2.3.232.
+Feb 12, 2026 1:19:03 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+Feb 12, 2026 1:19:08 PM org.eclipse.lsp4j.jsonrpc.services.GenericEndpoint notify
+INFO: Unsupported notification method: $/setTrace
+2026.02.12 13:20:17 INFO  Shutting down server
+2026.02.12 13:20:17 INFO  Memory monitor stopped
+2026.02.12 13:20:17 INFO  shutting down Metals
+2026.02.12 13:20:17 INFO  Exiting server
