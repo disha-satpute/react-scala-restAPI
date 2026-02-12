@@ -21,18 +21,37 @@ object FileService {
 
   def writeUsers(users: List[User]): Task[Unit] =
     ZIO.attempt {
-      val json = users.toJson
+      val json = users.toJsonPretty
       Files.write(Paths.get(filePath), json.getBytes)
     }
 
   def getUserById(id: Int): Task[Option[User]] =
     readUsers.map(_.find(_.id == id))
 
-  def addUser(user: User): Task[Unit] =
+  def addUser(newUser: User): Task[Either[String, User]] =
     for {
       users <- readUsers
-      _     <- writeUsers(users :+ user)
-    } yield ()
+
+      // check if username already exists
+      usernameExists = users.exists(_.username == newUser.username)
+
+      result <-
+        if (usernameExists)
+          ZIO.succeed(Left("Username already exists"))
+        else {
+          val nextId =
+            if (users.isEmpty) 1
+            else users.map(_.id).max + 1
+
+          val userWithId = newUser.copy(id = nextId)
+
+          for {
+            _ <- writeUsers(users :+ userWithId)
+          } yield Right(userWithId)
+        }
+
+    } yield result
+
 
   def updateUser(id: Int, updated: User): Task[Boolean] =
     for {

@@ -1,11 +1,14 @@
 package routes
 
+import utils.PasswordUtils
+import model.{User, UserResponse}
+import model.User._
+import model.UserResponse._
+import service.FileService
+
 import zio._
 import zio.http._
 import zio.json._
-import model.User
-import model.User._
-import service.FileService
 
 object UserRoutes {
 
@@ -16,8 +19,24 @@ object UserRoutes {
       Method.GET / "users" ->
         handler {
           FileService.readUsers
-            .map(users => Response.json(users.toJson))
-            .catchAll(_ => ZIO.succeed(Response.status(Status.InternalServerError)))
+            .map { users =>
+              val safeUsers =
+                users.map(u => UserResponse(u.id, u.username)).toJson
+
+              Response(
+                status = Status.Ok,
+                body = Body.fromString(safeUsers),
+                headers = Headers(Header.ContentType(MediaType.application.json))
+              )
+            }
+            .catchAll(_ =>
+              ZIO.succeed(
+                Response(
+                  status = Status.InternalServerError,
+                  body = Body.fromString("Internal Server Error")
+                )
+              )
+            )
         },
 
       // GET USER BY ID
@@ -25,10 +44,29 @@ object UserRoutes {
         handler { (id: Int, _: Request) =>
           FileService.getUserById(id)
             .map {
-              case Some(user) => Response.json(user.toJson)
-              case None       => Response.status(Status.NotFound)
+              case Some(user) =>
+                Response(
+                  status = Status.Ok,
+                  body = Body.fromString(
+                    UserResponse(user.id, user.username).toJson
+                  ),
+                  headers = Headers(Header.ContentType(MediaType.application.json))
+                )
+
+              case None =>
+                Response(
+                  status = Status.NotFound,
+                  body = Body.fromString("User not found")
+                )
             }
-            .catchAll(_ => ZIO.succeed(Response.status(Status.InternalServerError)))
+            .catchAll(_ =>
+              ZIO.succeed(
+                Response(
+                  status = Status.InternalServerError,
+                  body = Body.fromString("Internal Server Error")
+                )
+              )
+            )
         },
 
       // POST CREATE USER
@@ -36,12 +74,44 @@ object UserRoutes {
         handler { (req: Request) =>
           (for {
             body <- req.body.asString
+
             user <- ZIO
               .fromEither(body.fromJson[User])
               .mapError(_ => new RuntimeException("Invalid JSON"))
-            _    <- FileService.addUser(user)
-          } yield Response.text("User Created"))
-            .catchAll(_ => ZIO.succeed(Response.status(Status.BadRequest)))
+
+            hashedUser = user.copy(
+              password = PasswordUtils.hashPassword(user.password)
+            )
+
+            result <- FileService.addUser(hashedUser)
+
+          } yield
+            result match {
+
+              case Right(savedUser) =>
+                Response(
+                  status = Status.Created,
+                  body = Body.fromString(
+                    UserResponse(savedUser.id, savedUser.username).toJson
+                  ),
+                  headers = Headers(Header.ContentType(MediaType.application.json))
+                )
+
+              case Left(errorMessage) =>
+                Response(
+                  status = Status.Conflict,
+                  body = Body.fromString(errorMessage)
+                )
+            }
+
+            ).catchAll(_ =>
+            ZIO.succeed(
+              Response(
+                status = Status.BadRequest,
+                body = Body.fromString("Invalid request")
+              )
+            )
+          )
         }
     )
 }
