@@ -4,11 +4,13 @@ interface ButtonProps {
     text: string;
     color: "red" | "yellow" | "blue" | "green";
     icon: LucideIcon;
+    onClick: () => void;
 }
 
 export default function EndpointButton({
     text,
     color,
+    onClick,
     icon: Icon,
 }: ButtonProps) {
     const colorVariants = {
@@ -20,6 +22,7 @@ export default function EndpointButton({
 
     return (
         <button
+            onClick={onClick}
             className={`flex justify-center items-center gap-1.5 w-fit text-white py-2 px-4 rounded-lg active:scale-95 cursor-pointer ${colorVariants[color]}`}
         >
             <Icon size={20} />
