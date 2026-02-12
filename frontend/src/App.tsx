@@ -1,11 +1,12 @@
 import './App.css'
+import EndpointItemList from './components/EndpointItemList'
 
 function App() {
 
   return (
-    <>
-      <h1>rest and scala crud</h1>
-    </>
+    <div className='flex flex-col h-screen justify-center items-center'>
+        <EndpointItemList />
+    </div>
   )
 }
 
