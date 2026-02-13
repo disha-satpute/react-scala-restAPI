@@ -120,29 +120,47 @@ object UserRoutes {
           (for {
             body <- req.body.asString
 
-            user <- ZIO
+            incomingUser <- ZIO
               .fromEither(body.fromJson[User])
               .mapError(_ => new RuntimeException("Invalid JSON"))
 
-            hashedUser = user.copy(
-              password = PasswordUtils.hashPassword(user.password),
-              id = id
-            )
+            existingUserOpt <- FileService.getUserById(id)
 
-            updated <- FileService.updateUser(id, hashedUser)
+            response <- existingUserOpt match {
 
-          } yield
-            if (updated)
-              Response(
-                status = Status.Ok,
-                body = Body.fromString("User updated successfully")
-              )
-            else
-              Response(
-                status = Status.NotFound,
-                body = Body.fromString("User not found")
-              )
+              case Some(existingUser) =>
 
+                // decide password
+                val finalPassword =
+                  if (incomingUser.password.nonEmpty)
+                    PasswordUtils.hashPassword(incomingUser.password)
+                  else
+                    existingUser.password   // keep old hashed password
+
+                val updatedUser =
+                  existingUser.copy(
+                    username = incomingUser.username,
+                    url      = incomingUser.url,
+                    password = finalPassword
+                  )
+
+                FileService.updateUser(id, updatedUser).map { _ =>
+                  Response(
+                    status = Status.Ok,
+                    body = Body.fromString("User updated successfully")
+                  )
+                }
+
+              case None =>
+                ZIO.succeed(
+                  Response(
+                    status = Status.NotFound,
+                    body = Body.fromString("User not found")
+                  )
+                )
+            }
+
+          } yield response
             ).catchAll(_ =>
             ZIO.succeed(
               Response(
@@ -152,6 +170,7 @@ object UserRoutes {
             )
           )
         },
+
       // DELETE USER
       Method.DELETE / "users" / int("id") ->
         handler { (id: Int, _: Request) =>
