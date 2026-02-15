@@ -1,0 +1,42 @@
+[
+  {
+    "id" : 1,
+    "name" : "BMC",
+    "host" : "BMC.com",
+    "entityType" : "switch",
+    "username" : "admin",
+    "password" : "$2a$10$cknmODhbv8uiBj7B6Tz.heshLHoM3qzVIaA5NcPB5zRgy9Oc8uDsK"
+  },
+  {
+    "id" : 2,
+    "name" : "solarwinds",
+    "host" : "solarwinds.com",
+    "entityType" : "Laptop ",
+    "username" : "user12",
+    "password" : "$2a$10$A6iG/YyJz.Uc72ygrtcOCuaiZ3WLdjxeUQ9s9b.7F9JXO2Np5Pvo2"
+  },
+  {
+    "id" : 3,
+    "name" : "BMC",
+    "host" : "BMC.com",
+    "entityType" : "switch",
+    "username" : "admin",
+    "password" : "$2a$10$lEO01ioWBcJDVoRXPGsMvut.EEE6qmDscmr2QYv79H.VwqtAPrhNe"
+  },
+  {
+    "id" : 4,
+    "name" : "BMC",
+    "host" : "BMC.com",
+    "entityType" : "switch",
+    "username" : "admin",
+    "password" : "$2a$10$If6QObeHmv4D0j//VB/5S.KM93iTONVbf1y..QjOSGPsVkNTuiS9K"
+  },
+  {
+    "id" : 5,
+    "name" : "BMC",
+    "host" : "BMC.com",
+    "entityType" : "switch",
+    "username" : "admin",
+    "password" : "$2a$10$yKQXFq8yEFgiLdlt2yzQZ.zHI5tB0NZfkidKa2VQjUGVEaUvk44qS"
+  }
+]

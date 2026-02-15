@@ -2,7 +2,7 @@ import zio._
 import zio.http.Header.{AccessControlAllowOrigin, Origin}
 import zio.http.Middleware.{CorsConfig, cors}
 import zio.http._
-import routes.UserRoutes
+import routes.AssetRoutes
 
 object MainApp extends ZIOAppDefault {
 
@@ -16,6 +16,6 @@ object MainApp extends ZIOAppDefault {
     )
 
   override def run =
-    Server.serve((UserRoutes.routes @@ cors(config)).toHttpApp)
-      .provide(Server.defaultWithPort(8080))
+    Server.serve((AssetRoutes.routes @@ cors(config)).toHttpApp)
+      .provide(Server.defaultWithPort(8082))
 }
