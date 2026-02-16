@@ -8,6 +8,7 @@ case class AssetResponse(
                           host: String,
                           entityType: String,
                           username: String
+
                         )
 
 object AssetResponse {

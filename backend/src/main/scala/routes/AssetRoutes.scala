@@ -3,7 +3,8 @@ package routes
 import zio._
 import zio.http._
 import zio.json._
-import model.{Asset, AssetResponse}
+
+import model.{Asset, AssetResponse, AssetCreateRequest}
 import model.Asset._
 import model.AssetResponse._
 import service.FileService
@@ -14,35 +15,34 @@ object AssetRoutes {
   val routes: Routes[Any, Nothing] =
     Routes(
 
-      // GET ALL ASSETS
+      // ---------------- GET ALL ASSETS ----------------
       Method.GET / "assets" ->
         handler {
           FileService.readAssets
             .map { assets =>
-              val resp =
-                assets.map(a =>
-                  AssetResponse(
-                    a.id, a.name, a.host, a.entityType, a.username
-                  )
-                ).toJson
-
               Response(
                 status = Status.Ok,
-                body = Body.fromString(resp),
+                body = Body.fromString(
+                  assets.map(a =>
+                    AssetResponse(
+                      a.id, a.name, a.host, a.entityType, a.username
+                    )
+                  ).toJson
+                ),
                 headers = Headers(Header.ContentType(MediaType.application.json))
               )
             }
-            .catchAll { _ =>
+            .catchAll(_ =>
               ZIO.succeed(
                 Response(
                   status = Status.InternalServerError,
                   body = Body.fromString("Internal Server Error")
                 )
               )
-            }
+            )
         },
 
-      // GET ASSET BY ID
+      // ---------------- GET ASSET BY ID ----------------
       Method.GET / "assets" / int("id") ->
         handler { (id: Int, _: Request) =>
           FileService.getAssetById(id)
@@ -64,52 +64,123 @@ object AssetRoutes {
                   body = Body.fromString("Asset not found")
                 )
             }
-            .catchAll { _ =>
+            .catchAll(_ =>
               ZIO.succeed(
                 Response(
                   status = Status.InternalServerError,
                   body = Body.fromString("Internal Server Error")
                 )
               )
-            }
+            )
         },
 
-      // ADD ASSET
+      // ---------------- ADD ASSET (DUPLICATE-AWARE) ----------------
       Method.POST / "assets" ->
-        handler { (req: Request) =>
+        handler { (req: Request) =>   // ✅ FIX IS HERE
           (for {
-            body  <- req.body.asString
-            asset <- ZIO.fromEither(body.fromJson[Asset])
-            hashed =
-              asset.copy(
-                password = PasswordUtils.hashPassword(asset.password)
-              )
-            saved <- FileService.addAsset(hashed)
-          } yield
-            Response(
-              status = Status.Created,
-              body = Body.fromString(
-                AssetResponse(
-                  saved.id,
-                  saved.name,
-                  saved.host,
-                  saved.entityType,
-                  saved.username
-                ).toJson
-              ),
-              headers = Headers(Header.ContentType(MediaType.application.json))
-            )
-            ).catchAll { _ =>
+            body <- req.body.asString
+            input <- ZIO.fromEither(body.fromJson[AssetCreateRequest])
+
+            existing <- FileService.getAssetsByName(input.name)
+
+            response <-
+              if (existing.isEmpty) {
+                FileService.addAsset(
+                  Asset(
+                    name = input.name,
+                    host = input.host,
+                    entityType = input.entityType,
+                    username = input.username,
+                    password = PasswordUtils.hashPassword(input.password)
+                  )
+                ).map { saved =>
+                  Response(
+                    status = Status.Created,
+                    body = Body.fromString(
+                      AssetResponse(
+                        saved.id,
+                        saved.name,
+                        saved.host,
+                        saved.entityType,
+                        saved.username
+                      ).toJson
+                    ),
+                    headers = Headers(Header.ContentType(MediaType.application.json))
+                  )
+                }
+              }
+              else {
+                input.action match {
+
+                  case None =>
+                    ZIO.succeed(
+                      Response(
+                        status = Status.Conflict,
+                        body = Body.fromString("Duplicate name found")
+                      )
+                    )
+
+                  case Some("new") =>
+                    FileService.addAsset(
+                      Asset(
+                        name = input.name,
+                        host = input.host,
+                        entityType = input.entityType,
+                        username = input.username,
+                        password = PasswordUtils.hashPassword(input.password)
+                      )
+                    ).map(_ =>
+                      Response(
+                        status = Status.Created,
+                        body = Body.fromString("New asset created")
+                      )
+                    )
+
+                  case Some("overwrite") =>
+                    for {
+                      all <- FileService.readAssets
+                      nextId =
+                        if (all.isEmpty) 1 else all.map(_.id).max + 1
+
+                      asset =
+                        Asset(
+                          id = nextId,
+                          name = input.name,
+                          host = input.host,
+                          entityType = input.entityType,
+                          username = input.username,
+                          password = PasswordUtils.hashPassword(input.password)
+                        )
+
+                      _ <- FileService.overwriteAssetByName(asset)
+                    } yield
+                      Response(
+                        status = Status.Ok,
+                        body = Body.fromString("Asset overwritten successfully")
+                      )
+
+                  case _ =>
+                    ZIO.succeed(
+                      Response(
+                        status = Status.BadRequest,
+                        body = Body.fromString("Invalid action")
+                      )
+                    )
+                }
+              }
+
+          } yield response
+            ).catchAll(_ =>
             ZIO.succeed(
               Response(
                 status = Status.BadRequest,
                 body = Body.fromString("Invalid request")
               )
             )
-          }
+          )
         },
 
-      // UPDATE ASSET (password optional)
+      // ---------------- UPDATE ASSET ----------------
       Method.PUT / "assets" / int("id") ->
         handler { (id: Int, req: Request) =>
           (for {
@@ -136,17 +207,17 @@ object AssetRoutes {
                 status = Status.NotFound,
                 body = Body.fromString("Asset not found")
               )
-            ).catchAll { _ =>
+            ).catchAll(_ =>
             ZIO.succeed(
               Response(
                 status = Status.BadRequest,
                 body = Body.fromString("Invalid request")
               )
             )
-          }
+          )
         },
 
-      // DELETE ASSET
+      // ---------------- DELETE ASSET ----------------
       Method.DELETE / "assets" / int("id") ->
         handler { (id: Int, _: Request) =>
           FileService.deleteAsset(id)
@@ -162,14 +233,14 @@ object AssetRoutes {
                   body = Body.fromString("Asset not found")
                 )
             }
-            .catchAll { _ =>
+            .catchAll(_ =>
               ZIO.succeed(
                 Response(
                   status = Status.InternalServerError,
                   body = Body.fromString("Internal Server Error")
                 )
               )
-            }
+            )
         }
     )
 }

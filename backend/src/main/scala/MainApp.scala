@@ -17,5 +17,5 @@ object MainApp extends ZIOAppDefault {
 
   override def run =
     Server.serve((AssetRoutes.routes @@ cors(config)).toHttpApp)
-      .provide(Server.defaultWithPort(8082))
+      .provide(Server.defaultWithPort(8080))
 }
