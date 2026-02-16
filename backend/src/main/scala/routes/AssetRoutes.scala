@@ -76,7 +76,7 @@ object AssetRoutes {
 
       // ---------------- ADD ASSET (DUPLICATE-AWARE) ----------------
       Method.POST / "assets" ->
-        handler { (req: Request) =>   // ✅ FIX IS HERE
+        handler { (req: Request) =>
           (for {
             body <- req.body.asString
             input <- ZIO.fromEither(body.fromJson[AssetCreateRequest])
@@ -137,27 +137,42 @@ object AssetRoutes {
                     )
 
                   case Some("overwrite") =>
-                    for {
-                      all <- FileService.readAssets
-                      nextId =
-                        if (all.isEmpty) 1 else all.map(_.id).max + 1
+                    input.overwriteId match {
 
-                      asset =
-                        Asset(
-                          id = nextId,
-                          name = input.name,
-                          host = input.host,
-                          entityType = input.entityType,
-                          username = input.username,
-                          password = PasswordUtils.hashPassword(input.password)
+                      case Some(targetId) =>
+                        val updatedAsset =
+                          Asset(
+                            id = targetId,
+                            name = input.name,
+                            host = input.host,
+                            entityType = input.entityType,
+                            username = input.username,
+                            password = PasswordUtils.hashPassword(input.password)
+                          )
+
+                        FileService.updateAsset(targetId, updatedAsset).map {
+                          case true =>
+                            Response(
+                              status = Status.Ok,
+                              body = Body.fromString(s"Asset $targetId overwritten successfully")
+                            )
+
+                          case false =>
+                            Response(
+                              status = Status.NotFound,
+                              body = Body.fromString("Target asset not found")
+                            )
+                        }
+
+                      case None =>
+                        ZIO.succeed(
+                          Response(
+                            status = Status.BadRequest,
+                            body = Body.fromString("overwriteId is required for overwrite")
+                          )
                         )
+                    }
 
-                      _ <- FileService.overwriteAssetByName(asset)
-                    } yield
-                      Response(
-                        status = Status.Ok,
-                        body = Body.fromString("Asset overwritten successfully")
-                      )
 
                   case _ =>
                     ZIO.succeed(

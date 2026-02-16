@@ -8,8 +8,9 @@ case class AssetCreateRequest(
                                entityType: String,
                                username: String,
                                password: String,
-                               action: Option[String] // "new" | "overwrite"
-                             )
+                               action: Option[String] ,// "new" | "overwrite"
+                               overwriteId: Option[Int]
+  )
 
 object AssetCreateRequest {
   implicit val decoder: JsonDecoder[AssetCreateRequest] =

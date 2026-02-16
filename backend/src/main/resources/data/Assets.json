@@ -8,19 +8,59 @@
     "password" : "$2a$10$A6iG/YyJz.Uc72ygrtcOCuaiZ3WLdjxeUQ9s9b.7F9JXO2Np5Pvo2"
   },
   {
-    "id" : 6,
+    "id" : 32,
     "name" : "BMC",
-    "host" : "BMC.com",
-    "entityType" : "switch",
+    "host" : "bmc-new.com",
+    "entityType" : "pc",
     "username" : "admin",
-    "password" : "$2a$10$RS3OJ7IUEX66suHzESKe4ugoPPRbSay0aEJsPXskPQDTGULab1s1W"
+    "password" : "$2a$10$E9829bnOJXFkZMoldTVV0udFZX0mTmTcy/HXSFz0DlOwZ64uMwG2W"
   },
   {
-    "id" : 7,
+    "id" : 33,
     "name" : "BMC",
-    "host" : "BMC.com",
-    "entityType" : "switch",
+    "host" : "bmc-new.com",
+    "entityType" : "keyboard123",
     "username" : "admin",
-    "password" : "$2a$10$3biUV.OqPy4b7WLfIuKO9.h8va0.aHM99X9nksyH.ebxL/NuSaYRq"
+    "password" : "$2a$10$G0wHr6rJw/.3BKDKjHJ/dOoXWuLPWe0TAQtDaQCQsR6p31n1ldtU6"
+  },
+  {
+    "id" : 34,
+    "name" : "BMC",
+    "host" : "bmc-new.com",
+    "entityType" : "keyboard123",
+    "username" : "admin",
+    "password" : "$2a$10$d/gWT51kelm9n5X7wPLeEek8FK5r61ddJFJjUswT12Nehp8DUXJT2"
+  },
+  {
+    "id" : 35,
+    "name" : "BMC",
+    "host" : "bmc-new.com",
+    "entityType" : "keyboard123",
+    "username" : "admin",
+    "password" : "$2a$10$4nItzuLoxCQwIPseJ/1GneNFTlb4YLUJjcAQmkKrefc4UHeycDZoS"
+  },
+  {
+    "id" : 36,
+    "name" : "BMC",
+    "host" : "bmc-new.com",
+    "entityType" : "keyboard123",
+    "username" : "admin",
+    "password" : "$2a$10$OTQBPFLbt3mTI9.Lg4XGCu0SrFbAeHdHaiXcA6GfvSX7QYeDaFZ1C"
+  },
+  {
+    "id" : 37,
+    "name" : "BMC",
+    "host" : "bmc-new.com",
+    "entityType" : "keyboard123",
+    "username" : "admin",
+    "password" : "$2a$10$iInXmtR7mK0p6LeuRUD7o.bICyGNFLm4iVpIwN/FfH93Y2KzJpsuy"
+  },
+  {
+    "id" : 38,
+    "name" : "BMC",
+    "host" : "bmc-new.com",
+    "entityType" : "keyboard123",
+    "username" : "admin",
+    "password" : "$2a$10$Ygf0QQMi8gNh59jt5TvKa.fEoPi/BQ3QQjSN8IW12MBpjWgJOfop."
   }
 ]
