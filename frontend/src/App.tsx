@@ -1,11 +1,11 @@
 import './App.css'
-import EndpointItemList from './components/EndpointItemList'
+import AssetItemList from './components/AssetItemList'
 
 function App() {
 
   return (
     <div className='flex flex-col h-screen justify-center items-center'>
-        <EndpointItemList />
+        <AssetItemList />
     </div>
   )
 }

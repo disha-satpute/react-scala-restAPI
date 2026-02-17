@@ -7,7 +7,7 @@ interface ButtonProps {
     onClick: () => void;
 }
 
-export default function EndpointButton({
+export default function AssetButton({
     text,
     color,
     onClick,
