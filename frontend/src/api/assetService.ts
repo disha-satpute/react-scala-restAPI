@@ -21,7 +21,7 @@ export async function getAllAssets(): Promise<AssetResponse[]> {
 // GET ASSET BY ID
 export async function getAssetById(id: number): Promise<AssetResponse> {
     try {
-        const response = await fetch(`${API_BASE_URL}/assets/${id}`)
+        const response = await fetch(`${API_BASE_URL}/assets?id=${id}`)
         
         if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`)
@@ -66,7 +66,7 @@ export async function createAsset(request: AssetCreateRequest): Promise<AssetRes
 // UPDATE ASSET
 export async function updateAsset(id: number, asset: Asset): Promise<void> {
     try {
-        const response = await fetch(`${API_BASE_URL}/assets/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/assets?id=${id}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -86,7 +86,7 @@ export async function updateAsset(id: number, asset: Asset): Promise<void> {
 // DELETE ASSET
 export async function deleteAsset(id: number): Promise<void> {
     try {
-        const response = await fetch(`${API_BASE_URL}/assets/${id}`, {
+        const response = await fetch(`${API_BASE_URL}/assets?id=${id}`, {
             method: "DELETE",
         })
         

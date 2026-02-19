@@ -1,4 +1,4 @@
-import { PlusSquareIcon, RefreshCcwIcon } from "lucide-react";
+import { PlusSquareIcon, RefreshCcwIcon, SaveIcon, XIcon, SquarePenIcon } from "lucide-react";
 import AssetButton from "./AssetButton";
 import AssetItem from "./AssetItem";
 import Modal from "./Modal";
@@ -158,7 +158,7 @@ export default function AssetItemList() {
                     />
                 </div>
             </div>
-            <div className="flex flex-col gap-2 justify-start items-center min-h-156 bg-amber-200 p-3 rounded-b-lg">
+            <div className="flex flex-col gap-2 justify-start items-center min-h-106 max-h-156 overflow-x-auto bg-amber-200 p-3 rounded-b-lg">
                 {isLoading ? (
                     <p className="text-gray-600 font-medium">
                         Loading assets...
@@ -188,7 +188,14 @@ export default function AssetItemList() {
                 onClose={handleModalClose}
                 title={modalMode === 'update' ? 'Update Asset' : 'Add Asset'}
             >
-                <div className="flex flex-col gap-4">
+                <form
+                    onSubmit={(e) => {
+                        e.preventDefault();
+                        handleModalSubmit();
+                    }}
+                    className="flex flex-col gap-4"
+                >
+                    
                     <div>
                         <label className="block text-gray-700 text-sm font-bold mb-2">Name</label>
                         <input
@@ -237,20 +244,21 @@ export default function AssetItemList() {
                         />
                     </div>
                     <div className="flex justify-end gap-2 mt-4">
-                        <button
+                        <AssetButton
+                            text="Cancel"
+                            color="gray"
+                            icon={XIcon}
                             onClick={handleModalClose}
-                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-                        >
-                            Cancel
-                        </button>
-                        <button
-                            onClick={handleModalSubmit}
-                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-                        >
-                            Save
-                        </button>
+                            type="button"
+                        />
+                        <AssetButton
+                            text="Save"
+                            color="blue"
+                            icon={SaveIcon}
+                            type="submit"
+                        />
                     </div>
-                </div>
+                </form>
             </Modal>
 
             <Modal
@@ -270,39 +278,43 @@ export default function AssetItemList() {
                     
                     <div className="bg-gray-100 p-3 rounded">
                         <h4 className="font-semibold mb-2">Existing Assets:</h4>
-                        {duplicateAssets.map((asset) => (
-                            <div key={asset.id} className="mb-2 p-2 bg-white rounded">
-                                <p><span className="font-semibold">ID:</span> {asset.id}</p>
-                                <p><span className="font-semibold">Host:</span> {asset.host}</p>
-                                <p><span className="font-semibold">Type:</span> {asset.entityType}</p>
-                                <p><span className="font-semibold">Username:</span> {asset.username}</p>
-                                <button
-                                    onClick={() => handleDuplicateAction("overwrite", asset.id)}
-                                    className="mt-2 bg-orange-500 hover:bg-orange-600 text-white font-bold py-1 px-3 rounded cursor-pointer"
-                                >
-                                    Overwrite This
-                                </button>
-                            </div>
-                        ))}
+                        <div className="max-h-100 overflow-x-auto">
+                            {duplicateAssets.map((asset) => (
+                                <div key={asset.id} className="mb-2 p-2 bg-white rounded">
+                                    <p><span className="font-semibold">ID:</span> {asset.id}</p>
+                                    <p><span className="font-semibold">Host:</span> {asset.host}</p>
+                                    <p><span className="font-semibold">Type:</span> {asset.entityType}</p>
+                                    <p><span className="font-semibold">Username:</span> {asset.username}</p>
+                                    <div className="mt-2">
+                                        <AssetButton
+                                            text="Overwrite This"
+                                            color="orange"
+                                            icon={SquarePenIcon}
+                                            onClick={() => handleDuplicateAction("overwrite", asset.id)}
+                                        />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
                     </div>
 
                     <div className="flex justify-end gap-2 mt-4">
-                        <button
+                        <AssetButton
+                            text="Cancel"
+                            color="gray"
+                            icon={XIcon}
                             onClick={() => {
                                 setShowDuplicateModal(false);
                                 setPendingRequest(null);
                                 setDuplicateAssets([]);
                             }}
-                            className="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-                        >
-                            Cancel
-                        </button>
-                        <button
+                        />
+                        <AssetButton
+                            text="Create New Entry"
+                            color="green"
+                            icon={PlusSquareIcon}
                             onClick={() => handleDuplicateAction("new")}
-                            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded cursor-pointer"
-                        >
-                            Create New Entry
-                        </button>
+                        />
                     </div>
                 </div>
             </Modal>
