@@ -8,7 +8,12 @@ interface ModalProps {
     children: React.ReactNode;
 }
 
-export default function Modal({ isOpen, onClose, title, children }: ModalProps) {
+export default function Modal({
+    isOpen,
+    onClose,
+    title,
+    children,
+}: ModalProps) {
     if (!isOpen) return null;
 
     return (
@@ -16,13 +21,14 @@ export default function Modal({ isOpen, onClose, title, children }: ModalProps) 
             <div className="bg-amber-200 rounded-lg shadow-2xl w-125 overflow-hidden animate-in fade-in zoom-in duration-200">
                 <div className="flex justify-between items-center bg-gray-600 h-16 w-full px-4 text-white">
                     <h3 className="font-bold text-lg">{title}</h3>
-                    <button onClick={onClose} className="hover:text-gray-300 cursor-pointer">
+                    <button
+                        onClick={onClose}
+                        className="hover:text-gray-300 cursor-pointer"
+                    >
                         <XIcon size={24} />
                     </button>
                 </div>
-                <div className="p-6">
-                    {children}
-                </div>
+                <div className="p-6">{children}</div>
             </div>
         </div>
     );

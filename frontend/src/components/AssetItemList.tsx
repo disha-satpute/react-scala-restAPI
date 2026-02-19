@@ -1,62 +1,74 @@
-import { PlusSquareIcon, RefreshCcwIcon, SaveIcon, XIcon, SquarePenIcon } from "lucide-react";
+import {
+    PlusSquareIcon,
+    RefreshCcwIcon,
+    SaveIcon,
+    XIcon,
+    SquarePenIcon,
+} from "lucide-react";
 import AssetButton from "./AssetButton";
 import AssetItem from "./AssetItem";
 import Modal from "./Modal";
 import { useEffect, useState } from "react";
-import { getAllAssets, updateAsset, deleteAsset, createAsset } from "../api/assetService";
+import {
+    getAllAssets,
+    updateAsset,
+    deleteAsset,
+    createAsset,
+} from "../api/assetService";
 import type { AssetResponse, Asset, AssetCreateRequest } from "../types/Asset";
 
 export default function AssetItemList() {
     const [isLoading, setIsLoading] = useState(false);
     const [data, setData] = useState<AssetResponse[]>([]);
-    
+
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalMode, setModalMode] = useState<'create' | 'update'>('update');
-    const [selectedItem, setSelectedItem] = useState<AssetResponse | null>(null);
-    const [formData, setFormData] = useState<Asset>({ 
-        id: 0, 
-        name: '', 
-        host: '', 
-        entityType: '', 
-        username: '', 
-        password: '' 
+    const [modalMode, setModalMode] = useState<"create" | "update">("update");
+    const [selectedItem, setSelectedItem] = useState<AssetResponse | null>(
+        null,
+    );
+    const [formData, setFormData] = useState<Asset>({
+        id: 0,
+        name: "",
+        host: "",
+        entityType: "",
+        username: "",
+        password: "",
     });
 
     // Duplicate handling state
     const [showDuplicateModal, setShowDuplicateModal] = useState(false);
     const [duplicateAssets, setDuplicateAssets] = useState<AssetResponse[]>([]);
-    const [pendingRequest, setPendingRequest] = useState<AssetCreateRequest | null>(null);
+    const [pendingRequest, setPendingRequest] =
+        useState<AssetCreateRequest | null>(null);
 
     const fetchAssets = () => {
         setIsLoading(true);
         getAllAssets()
             .then((list) => setData(list))
-            .catch((error) =>
-                console.error("Failed to fetch assets:", error),
-            )
+            .catch((error) => console.error("Failed to fetch assets:", error))
             .finally(() => setIsLoading(false));
     };
 
     const handleAddClick = () => {
-        setFormData({ 
-            id: 0, 
-            name: '', 
-            host: '', 
-            entityType: '', 
-            username: '', 
-            password: '' 
+        setFormData({
+            id: 0,
+            name: "",
+            host: "",
+            entityType: "",
+            username: "",
+            password: "",
         });
         setSelectedItem(null);
-        setModalMode('create');
+        setModalMode("create");
         setIsModalOpen(true);
     };
 
     const handleEditClick = (id: number) => {
-        const item = data.find(d => d.id === id);
+        const item = data.find((d) => d.id === id);
         if (item) {
             setSelectedItem(item);
-            setFormData({ ...item, password: '' });
-            setModalMode('update');
+            setFormData({ ...item, password: "" });
+            setModalMode("update");
             setIsModalOpen(true);
         }
     };
@@ -83,11 +95,11 @@ export default function AssetItemList() {
 
     const handleModalSubmit = async () => {
         try {
-            if (modalMode === 'update' && selectedItem) {
+            if (modalMode === "update" && selectedItem) {
                 await updateAsset(selectedItem.id, formData);
                 fetchAssets();
                 handleModalClose();
-            } else if (modalMode === 'create') {
+            } else if (modalMode === "create") {
                 const request: AssetCreateRequest = {
                     name: formData.name,
                     host: formData.host,
@@ -95,12 +107,14 @@ export default function AssetItemList() {
                     username: formData.username,
                     password: formData.password,
                 };
-                
+
                 const result = await createAsset(request);
-                
+
                 if (result === "duplicate") {
                     // Handle duplicate - show duplicate modal
-                    const duplicates = data.filter(a => a.name === formData.name);
+                    const duplicates = data.filter(
+                        (a) => a.name === formData.name,
+                    );
                     setDuplicateAssets(duplicates);
                     setPendingRequest(request);
                     setShowDuplicateModal(true);
@@ -114,7 +128,10 @@ export default function AssetItemList() {
         }
     };
 
-    const handleDuplicateAction = async (action: "new" | "overwrite", overwriteId?: number) => {
+    const handleDuplicateAction = async (
+        action: "new" | "overwrite",
+        overwriteId?: number,
+    ) => {
         if (!pendingRequest) return;
 
         try {
@@ -182,11 +199,11 @@ export default function AssetItemList() {
                     ))
                 )}
             </div>
-            
+
             <Modal
                 isOpen={isModalOpen}
                 onClose={handleModalClose}
-                title={modalMode === 'update' ? 'Update Asset' : 'Add Asset'}
+                title={modalMode === "update" ? "Update Asset" : "Add Asset"}
             >
                 <form
                     onSubmit={(e) => {
@@ -195,9 +212,10 @@ export default function AssetItemList() {
                     }}
                     className="flex flex-col gap-4"
                 >
-                    
                     <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Name</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Name
+                        </label>
                         <input
                             name="name"
                             value={formData.name}
@@ -206,7 +224,9 @@ export default function AssetItemList() {
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Host</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Host
+                        </label>
                         <input
                             name="host"
                             value={formData.host}
@@ -215,7 +235,9 @@ export default function AssetItemList() {
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Entity Type</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Entity Type
+                        </label>
                         <input
                             name="entityType"
                             value={formData.entityType}
@@ -224,7 +246,9 @@ export default function AssetItemList() {
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Username</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Username
+                        </label>
                         <input
                             name="username"
                             value={formData.username}
@@ -233,13 +257,19 @@ export default function AssetItemList() {
                         />
                     </div>
                     <div>
-                        <label className="block text-gray-700 text-sm font-bold mb-2">Password</label>
+                        <label className="block text-gray-700 text-sm font-bold mb-2">
+                            Password
+                        </label>
                         <input
                             type="password"
                             name="password"
                             value={formData.password}
                             onChange={handleFormChange}
-                            placeholder={modalMode === 'update' ? "Leave empty to keep unchanged" : ""}
+                            placeholder={
+                                modalMode === "update"
+                                    ? "Leave empty to keep unchanged"
+                                    : ""
+                            }
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                         />
                     </div>
@@ -272,25 +302,53 @@ export default function AssetItemList() {
             >
                 <div className="flex flex-col gap-4">
                     <p className="text-gray-700">
-                        An asset with the name "{pendingRequest?.name}" already exists. 
-                        What would you like to do?
+                        An asset with the name "{pendingRequest?.name}" already
+                        exists. What would you like to do?
                     </p>
-                    
+
                     <div className="bg-gray-100 p-3 rounded">
                         <h4 className="font-semibold mb-2">Existing Assets:</h4>
                         <div className="max-h-100 overflow-x-auto">
                             {duplicateAssets.map((asset) => (
-                                <div key={asset.id} className="mb-2 p-2 bg-white rounded">
-                                    <p><span className="font-semibold">ID:</span> {asset.id}</p>
-                                    <p><span className="font-semibold">Host:</span> {asset.host}</p>
-                                    <p><span className="font-semibold">Type:</span> {asset.entityType}</p>
-                                    <p><span className="font-semibold">Username:</span> {asset.username}</p>
+                                <div
+                                    key={asset.id}
+                                    className="mb-2 p-2 bg-white rounded"
+                                >
+                                    <p>
+                                        <span className="font-semibold">
+                                            ID:
+                                        </span>{" "}
+                                        {asset.id}
+                                    </p>
+                                    <p>
+                                        <span className="font-semibold">
+                                            Host:
+                                        </span>{" "}
+                                        {asset.host}
+                                    </p>
+                                    <p>
+                                        <span className="font-semibold">
+                                            Type:
+                                        </span>{" "}
+                                        {asset.entityType}
+                                    </p>
+                                    <p>
+                                        <span className="font-semibold">
+                                            Username:
+                                        </span>{" "}
+                                        {asset.username}
+                                    </p>
                                     <div className="mt-2">
                                         <AssetButton
                                             text="Overwrite This"
                                             color="orange"
                                             icon={SquarePenIcon}
-                                            onClick={() => handleDuplicateAction("overwrite", asset.id)}
+                                            onClick={() =>
+                                                handleDuplicateAction(
+                                                    "overwrite",
+                                                    asset.id,
+                                                )
+                                            }
                                         />
                                     </div>
                                 </div>
