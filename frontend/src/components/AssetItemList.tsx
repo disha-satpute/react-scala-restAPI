@@ -97,8 +97,8 @@ export default function AssetItemList() {
         try {
             if (modalMode === "update" && selectedItem) {
                 await updateAsset(selectedItem.id, formData);
-                fetchAssets();
                 handleModalClose();
+                fetchAssets();
             } else if (modalMode === "create") {
                 const request: AssetCreateRequest = {
                     name: formData.name,
@@ -119,8 +119,8 @@ export default function AssetItemList() {
                     setPendingRequest(request);
                     setShowDuplicateModal(true);
                 } else {
-                    fetchAssets();
                     handleModalClose();
+                    fetchAssets();
                 }
             }
         } catch (error) {

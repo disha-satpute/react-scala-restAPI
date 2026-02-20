@@ -38,7 +38,7 @@ export async function getAssetById(id: number): Promise<AssetResponse> {
 // CREATE ASSET (with duplicate handling)
 export async function createAsset(
     request: AssetCreateRequest,
-): Promise<AssetResponse | string> {
+): Promise<string> {
     try {
         const response = await fetch(`${API_BASE_URL}/assets`, {
             method: "POST",
@@ -57,8 +57,8 @@ export async function createAsset(
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const data = await response.json();
-        return data;
+        const text = await response.text();
+        return text;
     } catch (error) {
         console.error("Failed to create asset:", error);
         throw error;
