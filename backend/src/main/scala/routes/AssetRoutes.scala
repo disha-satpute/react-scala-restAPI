@@ -129,10 +129,15 @@ object AssetRoutes {
                         username = input.username,
                         password = PasswordUtils.hashPassword(input.password)
                       )
-                    ).map(_ =>
+                    ).map( saved =>
                       Response(
                         status = Status.Created,
-                        body = Body.fromString("New asset created")
+                        body = Body.fromString(
+                          AssetResponse(
+                            saved.id, saved.name, saved.host, saved.entityType, saved.username
+                          ).toJson
+                        ),
+                        headers = Headers(Header.ContentType(MediaType.application.json))
                       )
                     )
 
@@ -151,7 +156,12 @@ object AssetRoutes {
                           case true =>
                             Response(
                               status = Status.Ok,
-                              body = Body.fromString(s"Asset $targetId overwritten successfully")
+                              body = Body.fromString(
+                                AssetResponse(
+                                  updatedAsset.id, updatedAsset.name, updatedAsset.host, updatedAsset.entityType, updatedAsset.username
+                                ).toJson
+                              ),
+                              headers = Headers(Header.ContentType(MediaType.application.json))
                             )
                           case false =>
                             Response(

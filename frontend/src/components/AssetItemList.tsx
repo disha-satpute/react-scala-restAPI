@@ -142,11 +142,11 @@ export default function AssetItemList() {
             };
 
             await createAsset(request);
-            fetchAssets();
-            setShowDuplicateModal(false);
-            setPendingRequest(null);
             setDuplicateAssets([]);
             handleModalClose();
+            setShowDuplicateModal(false);
+            setPendingRequest(null);
+            fetchAssets();
         } catch (error) {
             console.error("Failed to handle duplicate:", error);
         }
