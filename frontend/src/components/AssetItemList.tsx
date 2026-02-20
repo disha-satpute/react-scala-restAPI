@@ -221,6 +221,7 @@ export default function AssetItemList() {
                             value={formData.name}
                             onChange={handleFormChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            required
                         />
                     </div>
                     <div>
@@ -232,6 +233,7 @@ export default function AssetItemList() {
                             value={formData.host}
                             onChange={handleFormChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            required
                         />
                     </div>
                     <div>
@@ -243,6 +245,7 @@ export default function AssetItemList() {
                             value={formData.entityType}
                             onChange={handleFormChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            required
                         />
                     </div>
                     <div>
@@ -254,6 +257,7 @@ export default function AssetItemList() {
                             value={formData.username}
                             onChange={handleFormChange}
                             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                            required
                         />
                     </div>
                     <div>
