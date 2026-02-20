@@ -2,87 +2,96 @@ package service
 
 import zio._
 import zio.json._
-import java.io.IOException
-import scala.io.Source
+import model.Asset
+
 import java.nio.file.{Files, Paths}
-import model.User
 
 object FileService {
 
-  private val filePath = "src/main/resources/data/users.json"
+  private val filePath = "src/main/resources/data/Assets.json"
 
-  def readUsers: Task[List[User]] =
+  // ---------- READ ----------
+  def readAssets: Task[List[Asset]] =
     ZIO.attempt {
-      val source = Source.fromFile(filePath)
-      val data   = source.getLines().mkString
-      source.close()
-      data.fromJson[List[User]].getOrElse(List.empty)
+      val path = Paths.get(filePath)
+
+      if (!Files.exists(path)) {
+        List.empty
+      } else {
+        val data = Files.readString(path)
+        data.fromJson[List[Asset]].getOrElse(List.empty)
+      }
     }
 
-  def writeUsers(users: List[User]): Task[Unit] =
+
+  // ---------- WRITE (PRETTY JSON) ----------
+  def writeAssets(assets: List[Asset]): Task[Unit] =
     ZIO.attempt {
-      val json = users.toJsonPretty
+      val json = assets.toJsonPretty
       Files.write(Paths.get(filePath), json.getBytes)
     }
 
-  def getUserById(id: Int): Task[Option[User]] =
-    readUsers.map(_.find(_.id == id))
 
-  def addUser(newUser: User): Task[Either[String, User]] =
+  // ---------- GET BY ID ----------
+  def getAssetById(id: Int): Task[Option[Asset]] =
+    readAssets.map(_.find(_.id == id))
+
+  // ---------- GET BY NAME (NEW) ----------
+  def getAssetsByName(name: String): Task[List[Asset]] =
+    readAssets.map(_.filter(_.name == name))
+
+  // ---------- ADD ASSET (AUTO ID) ----------
+  def addAsset(asset: Asset): Task[Asset] =
     for {
-      users <- readUsers
+      assets <- readAssets
+      nextId =
+        if (assets.isEmpty) 1 else assets.map(_.id).max + 1
 
-      // check if username already exists
-      usernameExists = users.exists(_.username == newUser.username)
+      assetWithId = asset.copy(id = nextId)
+      _ <- writeAssets(assets :+ assetWithId)
+    } yield assetWithId
 
-      result <-
-        if (usernameExists)
-          ZIO.succeed(Left("Username already exists"))
-        else {
-          val nextId =
-            if (users.isEmpty) 1
-            else users.map(_.id).max + 1
-
-          val userWithId = newUser.copy(id = nextId)
-
-          for {
-            _ <- writeUsers(users :+ userWithId)
-          } yield Right(userWithId)
-        }
-
-    } yield result
-
-
-  def updateUser(id: Int, updated: User): Task[Boolean] =
+  // ---------- OVERWRITE BY NAME (NEW) ----------
+  def overwriteAssetByName(asset: Asset): Task[Unit] =
     for {
-      users <- readUsers
+      assets <- readAssets
+      filtered = assets.filterNot(_.name == asset.name)
+      _ <- writeAssets(filtered :+ asset)
+    } yield ()
 
-      exists = users.exists(_.id == id)
+  // ---------- UPDATE BY ID ----------
+  def updateAsset(id: Int, updated: Asset): Task[Boolean] =
+    for {
+      assets <- readAssets
+      existingOpt = assets.find(_.id == id)
 
-      updatedList =
-        users.map { user =>
-          if (user.id == id)
-            updated.copy(id = id)   //  preserve original ID
-          else
-            user
-        }
+      updatedAssets = existingOpt match {
+        case Some(existing) =>
+          assets.map { a =>
+            if (a.id == id)
+              updated.copy(
+                id = id,
+                password =
+                  if (updated.password.nonEmpty)
+                    updated.password
+                  else
+                    existing.password
+              )
+            else a
+          }
+        case None => assets
+      }
 
-      _ <- if (exists) writeUsers(updatedList)
-      else ZIO.unit
-
+      exists = existingOpt.isDefined
+      _ <- if (exists) writeAssets(updatedAssets) else ZIO.unit
     } yield exists
 
-  def deleteUser(id: Int): Task[Boolean] =
+  // ---------- DELETE ----------
+  def deleteAsset(id: Int): Task[Boolean] =
     for {
-      users <- readUsers
-
-      filtered = users.filterNot(_.id == id)
-
-      exists = users.exists(_.id == id)
-
-      _ <- if (exists) writeUsers(filtered)
-      else ZIO.unit
-
+      assets <- readAssets
+      exists = assets.exists(_.id == id)
+      updated = assets.filterNot(_.id == id)
+      _ <- if (exists) writeAssets(updated) else ZIO.unit
     } yield exists
-
 }
